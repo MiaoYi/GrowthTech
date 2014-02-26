@@ -1,0 +1,98 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+ 
+	<context:component-scan base-package="org.growthTech.controller" />
+	
+	<!-- <context:annotation-config/> -->
+	 <mvc:annotation-driven/>
+	 
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+ 
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/growthtech?useUnicode=true&amp;characterEncoding=utf-8" />
+		<property name="username" value="root" />
+		<property name="password" value="celavi" />
+	</bean>
+	  
+    <!--  
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+ 
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://w.rdc.sae.sina.com.cn:3307/app_growthtech?useUnicode=true&amp;characterEncoding=utf-8" />
+		<property name="username" value="olwz2yz00w" />
+		<property name="password" value="kx2zki330h0h0mhlw215wim2zjx5iw0xxxyw0xjw" />
+	</bean>
+	-->
+	
+	<bean id="baseDAO" class="org.growthTech.dao.imp.BaseDAO">
+	</bean>
+	
+	<bean id="cardDAO" class="org.growthTech.dao.imp.JdbcCardDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="parentDAO" class="org.growthTech.dao.imp.JdbcParentDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="studentDAO" class="org.growthTech.dao.imp.JdbcStudentDAO">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="subscribeService" class="org.growthTech.wechat.service.SubscribeService">
+	</bean>
+	
+	<bean id="coreService" class="org.growthTech.wechat.service.CoreService"></bean>
+	
+	    <mvc:resources mapping="/css/**" location="/css/" />
+<mvc:resources mapping="/images/**" location="/images/" />
+<mvc:resources mapping="/js/**" location="/js/" />
+
+    	
+
+ 
+ <bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix">
+			<value>/WEB-INF/pages/</value>
+		</property>
+		<property name="suffix">
+			<value>.jsp</value>
+		</property>
+	</bean>
+	
+	<bean id="viewResolver"
+    class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+    <property name="viewClass">
+        <value>
+            org.springframework.web.servlet.view.tiles2.TilesView
+        </value>
+    </property>
+</bean>
+
+<bean id="tilesConfigurer"
+    class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
+    <property name="definitions">
+        <list>
+            <value>/WEB-INF/tiles.xml</value>
+        </list>
+    </property>
+</bean>
+
+<!-- Configure the multipart resolver -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- one of the properties available; the maximum file size in bytes -->
+        <property name="maxUploadSize" value="1000000"/>
+    </bean>
+    
+</beans>

@@ -1,0 +1,1 @@
+<jsp:forward page="cards"></jsp:forward>
